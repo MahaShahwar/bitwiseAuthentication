@@ -1,14 +1,13 @@
 import { forwardRef, Global, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { userModule } from 'src/user/user.module';
-import { authService } from 'src/auth/auth.service'
-import { LocalStrategy } from 'src/auth/strategy/local.strategy';
+import { userModule } from '@User/user.module';
+import { authService } from '@Auth/auth.service'
+import { LocalStrategy } from '@Auth/strategy/local.strategy';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { jwtConstants } from 'src/auth/constants';
-import { JwtStrategy } from './strategy/jwt.strategy';
-import { AuthController } from './auth.controller';
-import { RolesGuard } from './guards/roles.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { jwtConstants } from '@Auth/constants';
+import { JwtStrategy } from '@Auth/strategy/jwt.strategy';
+import { AuthController } from '@Auth/auth.controller';
+import { RolesGuard } from '@Auth/guards/roles.guard';
 
 @Global()
 @Module({
@@ -16,7 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
     forwardRef(()=>userModule),
     PassportModule.register({ defaultStrategy: 'bearer' }),
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_KEY,
       signOptions: { expiresIn: '60s' },
     }),
 ],

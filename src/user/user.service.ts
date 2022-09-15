@@ -1,7 +1,7 @@
 import { Injectable, UseGuards } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { user } from "./user.model";
+import { user } from "@User/user.model";
 require("dotenv").config();
 
 @Injectable()

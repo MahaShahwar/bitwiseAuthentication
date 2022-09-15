@@ -1,6 +1,6 @@
 import { Schema } from '@nestjs/mongoose'
 import * as mongoose from 'mongoose'
-import { Role } from 'src/auth/enums/role.enum'
+import { Role } from '@Auth/enums/role.enum'
 
 
 //Schema define in db

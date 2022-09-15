@@ -1,11 +1,11 @@
 import { Body, ConsoleLogger, Controller, Get, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { userDto } from './user.dto';
-import { userService } from './user.service';
+import { userDto } from '@User/user.dto';
+import { userService } from '@User/user.service';
 import * as bcrypt from 'bcrypt';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/auth/decorator/roles.decorator';
-import { Role } from 'src/auth/enums/role.enum';
+import { JwtAuthGuard } from '@Auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@Auth/guards/roles.guard';
+import { Roles } from '@Auth/decorator/roles.decorator';
+import { Role } from '@Auth/enums/role.enum';
 
 @Controller('users')
 export class userController {
