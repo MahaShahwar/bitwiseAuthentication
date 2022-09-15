@@ -7,6 +7,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from 'src/auth/constants';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { AuthController } from './auth.controller';
+import { RolesGuard } from './guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Global()
 @Module({
@@ -19,9 +21,9 @@ import { AuthController } from './auth.controller';
     }),
 ],
   controllers:[AuthController],
-  providers: [authService,LocalStrategy,JwtStrategy],
+  providers: [authService,LocalStrategy,JwtStrategy,RolesGuard],
   exports:[authService,
-    PassportModule.register({ defaultStrategy: 'bearer' })
+    PassportModule.register({ defaultStrategy: 'bearer' }),
   ]
 })
 export class AuthModule {}

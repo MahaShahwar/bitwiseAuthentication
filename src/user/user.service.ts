@@ -1,7 +1,6 @@
 import { Injectable, UseGuards } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { user } from "./user.model";
 require("dotenv").config();
 
@@ -13,7 +12,7 @@ export class userService{
     ){}
     
     //Adding into database
-    async signUp(name:string, email:string,password:string){
+    async signUp(name:string, email:string,password:string,roles:[]){
         const checkEmail = await this.userModel.findOne({email:email})
         if(checkEmail){
             return 'Email already existed'
@@ -22,6 +21,7 @@ export class userService{
                 name,
                 email,
                 password,
+                roles
             })
             return newUser
         }
@@ -31,11 +31,12 @@ export class userService{
 
     async getEntity(email:string){
         const getUser = await this.userModel.findOne({email:email})
-        console.log(getUser)
+        console.log('in user Service: ',getUser);
+        
         return getUser
       }
 
-      @UseGuards(JwtAuthGuard)
+      
       async getUsers():Promise<any>{
         const allUsers = await this.userModel.find().exec()
         return allUsers

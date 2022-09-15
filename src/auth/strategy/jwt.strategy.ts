@@ -14,12 +14,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: jwtConstants.secret, 
     });
   }
-
+  //Run after finding the token(token contains the info given in payload)
   async validate(payload: any) {
-    const user = await this.authService.login(payload);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    return user;
+    return { email: payload.email, roles:payload.roles }   
   }
 }

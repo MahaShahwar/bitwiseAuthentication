@@ -1,12 +1,11 @@
-import { Body, Controller, Get, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ConsoleLogger, Controller, Get, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { userDto } from './user.dto';
 import { userService } from './user.service';
 import * as bcrypt from 'bcrypt';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-// import { authGuard } from 'src/auth/local-auth.guard';
-// import { AuthGuard } from '@nestjs/passport';
-// import { authService } from 'src/auth/auth.service';
-// import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import { Role } from 'src/auth/enums/role.enum';
 
 @Controller('users')
 export class userController {
@@ -26,15 +25,16 @@ export class userController {
          const added = await this.userService.signUp(
             user.name,
             user.email,
-            hashedPass
+            hashedPass,
+            user.roles
         )
         return added
          }
-
-    @UseGuards(JwtAuthGuard)
-
+    @Roles(Role.User)
+    @UseGuards(JwtAuthGuard,RolesGuard)
     @Get('allUsers')
         async allUsers(){
+            //console.log(user)
             const check= await this.userService.getUsers()
             return check
         }
