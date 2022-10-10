@@ -1,17 +1,14 @@
-import { Prop } from "@nestjs/mongoose"
-import { IsEmail, Length } from "class-validator"
+import { IsEmail, Length } from 'class-validator';
 
 //Define how the data pass or get from client side and use it
-export class userDto{
+export class userDto {
+  name: string;
 
-    name:string
+  @IsEmail()
+  email: string;
 
-    @IsEmail()
-    email:string
+  @Length(5)
+  password: string;
 
-    @Length(5)
-    password:string
-    
-    roles:[]
-    
+  roles: [];
 }
