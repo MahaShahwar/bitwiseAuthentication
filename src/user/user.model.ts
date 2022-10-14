@@ -1,3 +1,5 @@
+import { Permissions } from '@root/permissions/permissions.schema';
+import { Roles } from '@root/roles/roles.schema';
 import * as mongoose from 'mongoose';
 // import { Role } from '@Auth/enums/role.enum';
 
@@ -6,8 +8,15 @@ export const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  //   roles: { type: String, enum: Role },
-  roles: [],
+  role: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Roles',
+        unique: true,
+      },
+    ],
+  },
 });
 
 //Type Checking
@@ -16,6 +25,5 @@ export interface user {
   name: string;
   email: string;
   password: string;
-  //   roles: Role[];
-  roles: [];
+  role: Roles;
 }

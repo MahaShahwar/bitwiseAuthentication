@@ -1,7 +1,9 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { user } from '@User/user.model';
+import { Role } from '@root/auth/enums/role.enum';
+import { Roles } from '@root/roles/roles.schema';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
@@ -10,7 +12,7 @@ export class userService {
   constructor(@InjectModel('user') private readonly userModel: Model<user>) {}
 
   //Adding into database
-  async signUp(name: string, email: string, password: string, roles: []) {
+  async signUp(name: string, email: string, password: string, role: Roles) {
     const checkEmail = await this.userModel.findOne({ email: email });
     if (checkEmail) {
       return 'Email already existed';
@@ -19,7 +21,7 @@ export class userService {
         name,
         email,
         password,
-        roles,
+        role,
       });
       return newUser;
     }
@@ -39,10 +41,10 @@ export class userService {
   }
 
   //Update user
-  async updateUser(email: string, roles: []): Promise<any> {
+  async updateUser(email: string, role: Roles): Promise<any> {
     const updatedUser = await this.userModel.findOneAndUpdate(
       { email: email },
-      { roles: roles },
+      { role: role },
       { new: true },
     );
     return updatedUser;

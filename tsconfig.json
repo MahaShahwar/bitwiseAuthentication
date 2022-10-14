@@ -22,6 +22,8 @@
       "@Auth/*": ["src/auth/*"],
       "@User/*": ["src/user/*"],
       "@Product/*": ["src/product/*"],
+      "@Roles/*": ["src/roles/*"],
+
     }
   }
 }

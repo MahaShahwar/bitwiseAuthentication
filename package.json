@@ -36,6 +36,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.2",
+    "express-list-routes": "^1.1.3",
     "ioredis": "^5.2.3",
     "module-alias": "^2.2.2",
     "mongoose": "^6.6.0",
@@ -78,7 +79,8 @@
     "@root": "src",
     "@Auth": "src/auth",
     "@User": "src/user",
-    "@Product": "src/product"
+    "@Product": "src/product",
+    "@Roles": "src/roles"
   },
   "jest": {
     "moduleFileExtensions": [

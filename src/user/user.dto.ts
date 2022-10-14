@@ -1,3 +1,4 @@
+import { Roles } from '@root/roles/roles.schema';
 import { IsEmail, Length } from 'class-validator';
 
 //Define how the data pass or get from client side and use it
@@ -10,5 +11,6 @@ export class userDto {
   @Length(5)
   password: string;
 
-  roles: [];
+  // roles: number;
+  role: Roles;
 }
