@@ -1,14 +1,7 @@
-import {
-  CacheInterceptor,
-  CacheModule,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-} from '@nestjs/common';
-
 import { AppController } from '@root/app.controller';
 import { AppService } from '@root/app.service';
 import { AuthModule } from '@root/auth/auth.module';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PermissionsModule } from './permissions/permissions.module';
 import { ProductModule } from '@root/product/product.module';

@@ -1,18 +1,19 @@
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+
+import { AuthModule } from '@Auth/auth.module';
+import { LoggerMiddleware } from './user.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
+import { permissionsSchema } from '@root/permissions/permissions.schema';
+//import { RolesModule } from '@root/roles/roles.module';
+import { rolesSchema } from '@root/roles/roles.schema';
 import { userController } from '@User/user.controller';
 import { userSchema } from '@User/user.model';
 import { userService } from '@User/user.service';
-import { AuthModule } from '@Auth/auth.module';
-import { LoggerMiddleware } from './user.middleware';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { RolesModule } from '@root/roles/roles.module';
-import { rolesSchema } from '@root/roles/roles.schema';
-import { permissionsSchema } from '@root/permissions/permissions.schema';
 
 @Module({
   imports: [
-    AuthModule,
+    //AuthModule,
     MongooseModule.forFeature([
       { name: 'user', schema: userSchema },
       { name: 'Roles', schema: rolesSchema },

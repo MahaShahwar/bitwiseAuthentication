@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Routes } from './routes.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
+import { Routes } from '@root/routes/routes.schema';
+import { RoutesEnum } from '@root/routes/enums/routes.enum';
 @Injectable()
 export class RoutesService {
   constructor(
     @InjectModel('Routes') private readonly routesModel: Model<Routes>,
   ) {}
-  async route(router): Promise<any> {
-    const routeArray = [];
-    for (let i = 1; i < router.stack.length; i++) {
+  // eslint-disable-next-line @typescript-eslint/typedef, @typescript-eslint/explicit-module-boundary-types
+  async route(router): Promise<string> {
+    const routeArray: string[] = [];
+    let i: number;
+    for (i = 1; i < router.stack.length; i++) {
       if (router.stack[i].route) {
         routeArray.push(router.stack[i].route.path);
       }
@@ -18,41 +21,46 @@ export class RoutesService {
 
     routeArray.splice(routeArray.indexOf('/'), 1);
 
-    for (let i = 0; i < routeArray.length; i++) {
-      const path = routeArray[i].split('/');
-      const exist = await this.routesModel.find({
-        baseUrl: path[1],
-      });
-      if (exist.length > 0) {
-        const c = await this.routesModel.find({
-          'urls.url': path[2],
-        });
-        console.log(c);
+    try {
+      for (i = 0; i < routeArray.length; i++) {
+        //split and add forwardslash
+        const path: string[] = routeArray[i].split(/(?=[/])/g);
 
-        if (c) {
-          console.log('nothing');
-        } else {
-          await this.routesModel
-            .findOneAndUpdate(
+        const p1: string = path[0];
+        const p2: string = path.slice(1).join('');
+
+        const exist: object = await this.routesModel.find({
+          baseUrl: p1,
+        });
+
+        if (Object.keys(exist).length > 0) {
+          const c: Routes[] = await this.routesModel.find({
+            _id: exist[0]._id,
+            'urls.url': p2,
+          });
+
+          if (c.length == 0) {
+            await this.routesModel.findOneAndUpdate(
               { _id: exist[0]._id },
               {
                 $push: {
                   urls: {
-                    url: path[2],
+                    url: p2,
                   },
                 },
               },
-            )
-            .catch(function (err) {
-              console.log(err);
-            });
+            );
+          }
+        } else {
+          const base: string = p1;
+          const url: string = p2;
+          const u: [object] = [{ url }];
+          await this.routesModel.create({ baseUrl: base, urls: u });
         }
-      } else {
-        const base = path[1];
-        const url = path[2];
-        const u = [{ url }];
-        await this.routesModel.create({ baseUrl: base, urls: u });
       }
+      return RoutesEnum.msg;
+    } catch (err) {
+      throw new ForbiddenException(err.message);
     }
   }
 }
