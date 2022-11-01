@@ -5,14 +5,16 @@ import {
   Module,
   NestModule,
 } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+
 import { AppController } from '@root/app.controller';
 import { AppService } from '@root/app.service';
-import { userModule } from '@root/user/user.module';
 import { AuthModule } from '@root/auth/auth.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { PermissionsModule } from './permissions/permissions.module';
 import { ProductModule } from '@root/product/product.module';
 import { RolesModule } from './roles/roles.module';
-import { PermissionsModule } from './permissions/permissions.module';
+import { RoutesModule } from './routes/routes.module';
+import { userModule } from '@root/user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     ProductModule,
     RolesModule,
     PermissionsModule,
+    RoutesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
